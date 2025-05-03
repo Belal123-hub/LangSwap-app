@@ -9,11 +9,11 @@ class AuthRemoteDataSourceImpl(
 ): AuthRemoteDataSource {
 
     override suspend fun signUp(
-        fullName: String,
+        fullName: String?,
         email: String,
         password: String,
-        phoneNumber: String,
-        confirmedPassword: String
+        phoneNumber: String?,
+        confirmedPassword: String?
     ): AccessToken {
         val request = AuthRequest(
             fullName = fullName,
@@ -24,5 +24,14 @@ class AuthRemoteDataSourceImpl(
 
         val response = authApi.signUp(request)
         return AccessToken(response.accessToken, response.refreshToken)
+    }
+
+    override suspend fun signIn(email: String, password: String): AccessToken {
+        val request = AuthRequest(
+            email = email,
+            password = password
+        )
+        val response = authApi.signIn(request)
+        return AccessToken(response.accessToken,response.refreshToken)
     }
 }

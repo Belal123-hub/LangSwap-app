@@ -4,11 +4,11 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class AuthRequest(
-    val fullName: String,
+    val fullName: String? = null,
     val email: String,
     val password: String,
     val address: String? = null,
     val birthDate: String? = null,
-    val phoneNumber: String,
+    val phoneNumber: String? = null,
     val gender: String? = null
 )

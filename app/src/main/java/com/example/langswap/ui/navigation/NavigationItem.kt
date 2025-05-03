@@ -6,4 +6,6 @@ sealed class NavigationItem(val route: String) {
     object SignUp : NavigationItem("sign_up")
     object SignIn : NavigationItem("sign_in")
     object  ProfileEdit : NavigationItem("profile_edit")
+    object Home : NavigationItem("home")
+
 }

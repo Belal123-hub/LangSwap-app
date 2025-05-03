@@ -7,8 +7,10 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.langswap.ui.screens.auth.signIn.SignInScreen
 import com.example.langswap.ui.screens.auth.signUp.SignUpScreen
 import com.example.langswap.ui.screens.auth.start.StartScreen
+import com.example.langswap.ui.screens.home.HomeScreen
 import com.example.langswap.ui.screens.profile.ProfileEditScreen
 
 @Composable
@@ -33,8 +35,12 @@ fun AppNavHost(
             )
         }
         composable(NavigationItem.SignIn.route) {
-            // Placeholder - implement your SignInScreen later
-            Text("Sign In Screen")
+            SignInScreen(
+                onSignInSuccess = {navController.navigate(NavigationItem.Home.route)}
+            )
+        }
+        composable(NavigationItem.Home.route) {
+            HomeScreen()
         }
         composable(NavigationItem.ProfileEdit.route){
             ProfileEditScreen()

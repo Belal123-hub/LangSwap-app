@@ -1,4 +1,4 @@
-package com.example.langswap.ui.screens.auth.signUp
+package com.example.langswap.ui.screens.auth.signIn
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -8,12 +8,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -32,15 +31,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.langswap.R
 import com.example.langswap.ui.common.AppButton
-import com.example.langswap.ui.common.AppTextField
 import com.example.langswap.ui.common.PasswordVisibilityToggle
+import com.example.langswap.ui.common.AppTextField
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun SignUpScreen(
-    onSignUpSuccess: () -> Unit,
-    viewModel: SignUpViewModel = koinViewModel()
+fun SignInScreen(
+    onSignInSuccess: () -> Unit,
+    viewModel: SignInViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
 
@@ -52,42 +51,37 @@ fun SignUpScreen(
         }
 
         launch {
-            viewModel.navigateToProfile.collect {
-                onSignUpSuccess()
+            viewModel.navigateToHome.collect {
+                onSignInSuccess()
             }
         }
     }
 
-    SignUpContent(
-        onSignUpClick = viewModel::signUp,
+    SignInContent(
+        onSignInClick = viewModel::signIn,
         isLoading = viewModel.isLoading.collectAsState().value
     )
 }
+
 @Composable
-fun SignUpContent(
-    onSignUpClick: (String, String, String, String, String) -> Unit,
+fun SignInContent(
+    onSignInClick: (String, String) -> Unit,
     isLoading: Boolean
 ) {
-    val scrollState = rememberScrollState()
-    var fullName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
-    var phone by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(scrollState)
             .padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            text = stringResource(R.string.sign_up),
+            text = "Sign In", // Different title
             style = MaterialTheme.typography.headlineLarge.copy(
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF252EFF)
+                color = Color(0xFF252EFF) // Same theme color
             ),
             modifier = Modifier
                 .fillMaxWidth()
@@ -95,50 +89,28 @@ fun SignUpContent(
             textAlign = TextAlign.Center
         )
         AppTextField(
-            label = stringResource(R.string.full_name),
-            placeholder = stringResource(R.string.enter_your_full_name),
-            value = fullName,
-            onValueChange = { fullName = it }
-        )
-        AppTextField(
-            label = stringResource(R.string.e_mail),
-            placeholder = stringResource(R.string.enter_your_email),
+            label = "Email",
             value = email,
             keyboardType = KeyboardType.Email,
             onValueChange = { email = it }
         )
         AppTextField(
-            label = stringResource(R.string.phone),
-            placeholder = stringResource(R.string.enter_your_phone_number),
-            value = phone,
-            keyboardType = KeyboardType.Phone,
-            onValueChange = { phone = it }
-        )
-        AppTextField(
-            label = stringResource(R.string.password),
-            placeholder = stringResource(R.string.enter_your_password),
+            label = "Password",
             value = password,
             keyboardType = KeyboardType.Password,
             trailingIcon = { PasswordVisibilityToggle(passwordVisible) { passwordVisible = it } },
             onValueChange = { password = it }
         )
-        AppTextField(
-            label = stringResource(R.string.confirm_password),
-            placeholder = stringResource(R.string.confirm_your_password),
-            value = confirmPassword,
-            keyboardType = KeyboardType.Password,
-            trailingIcon = { PasswordVisibilityToggle(passwordVisible) { passwordVisible = it } },
-            onValueChange = { confirmPassword = it }
-        )
-
         Spacer(modifier = Modifier.height(24.dp))
-
         AppButton(
-            text = if (isLoading) stringResource(R.string.processing) else stringResource(R.string.register),
-            onClick = {
-                onSignUpClick(fullName, email, phone, password, confirmPassword)
-            }
+            text = if (isLoading) "Signing In..." else "Sign In",
+            onClick = { onSignInClick(email, password) }
         )
+        TextButton(
+            onClick = { /* Navigate to Sign Up */ },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Don't have an account? Sign Up")
+        }
     }
 }
-

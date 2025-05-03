@@ -3,14 +3,13 @@ package com.example.domain.auth.usecase
 import com.example.domain.auth.AuthRepository
 import com.example.domain.auth.usecase.model.AuthInfo
 
-
-interface SignUpUseCase {
+interface SignInUseCase {
     suspend operator fun invoke(
         authInfo: AuthInfo
     )
 }
-class SignUpUseCaseImpl(private val authRepository: AuthRepository) : SignUpUseCase {
+class SignInUseCaseImpl(private val authRepository: AuthRepository):SignInUseCase{
     override suspend fun invoke(authInfo: AuthInfo) {
-        authRepository.signUp(authInfo)
+        authRepository.signIn(authInfo)
     }
 }
