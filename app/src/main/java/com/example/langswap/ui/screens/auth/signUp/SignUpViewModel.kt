@@ -3,7 +3,7 @@ package com.example.langswap.ui.screens.auth.signUp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.auth.usecase.SignUpUseCase
-import com.example.domain.auth.usecase.model.AuthInfo
+import com.example.domain.auth.usecase.model.SignUpInfo
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -37,7 +37,7 @@ class SignUpViewModel(
                 }
 
                 signUpUseCase(
-                    AuthInfo(
+                    SignUpInfo(
                         fullName = fullName,
                         email = email,
                         phone = phone,

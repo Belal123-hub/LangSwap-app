@@ -1,5 +1,6 @@
 package com.example.data.network.common.interceptors
 
+import android.util.Log
 import com.example.data.network.common.model.ErrorResponse
 import com.example.domain.accessToken.AccessTokenRepository
 import com.example.domain.common.ScareMeError
@@ -22,6 +23,9 @@ class StatusCodeInterceptor(
     }
 
     private fun handleResponse(response: Response): Response {
+        Log.d("StatusCodeInterceptor", "Response Code: ${response.code}")
+        Log.d("StatusCodeInterceptor", "Response Body: ${response.peekBody(Long.MAX_VALUE).string()}")
+
         when (response.code) {
             in HttpURLConnection.HTTP_OK..HttpURLConnection.HTTP_MULT_CHOICE -> null
             HttpURLConnection.HTTP_UNAUTHORIZED -> {

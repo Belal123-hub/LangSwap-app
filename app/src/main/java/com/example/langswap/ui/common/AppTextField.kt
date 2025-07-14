@@ -14,6 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -27,6 +29,7 @@ fun AppTextField(
     isError: Boolean = false,
     keyboardType: KeyboardType = KeyboardType.Text,
     trailingIcon: @Composable (() -> Unit)? = null,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
     onValueChange: (String) -> Unit
 ) {
     Column(modifier = modifier) {
@@ -34,36 +37,31 @@ fun AppTextField(
             text = label,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
-
         )
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp)
-                .width(367.dp),
+                .height(50.dp),
             placeholder = { Text(placeholder) },
             textStyle = MaterialTheme.typography.bodyMedium.copy(
-                fontSize = 15.sp
+                fontSize = 15.sp,
+                color = Color.Black
             ),
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+            visualTransformation = visualTransformation,
+            trailingIcon = trailingIcon,
+            isError = isError,
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                // Container colors (keep your existing ones)
-                errorContainerColor = Color.Transparent,
-
-                // Border colors (#6066FF)
                 focusedBorderColor = Color(0xFF6066FF),
                 unfocusedBorderColor = Color(0xFF6066FF),
                 errorBorderColor = Color(0xFF6066FF),
-                // Text colors
-                focusedTextColor = MaterialTheme.colorScheme.onSurface,
-                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
-            ),
-            shape = MaterialTheme.shapes.medium,
-            trailingIcon = trailingIcon,
-            isError = isError
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black,
+                errorContainerColor = Color.Transparent,
+            )
         )
     }
 }

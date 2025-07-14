@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit
 
 @Suppress("MagicNumber", "LongParameterList")
 object Network {
-    private const val BASE_URL = "http://10.0.2.2:5080/"
+    private const val BASE_URL = "http://192.168.31.10:8080/"
 
     private const val CONTENT_TYPE = "application/json"
 

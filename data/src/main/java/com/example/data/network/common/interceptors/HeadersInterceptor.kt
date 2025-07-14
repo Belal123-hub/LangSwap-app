@@ -1,5 +1,6 @@
 package com.example.data.network.common.interceptors
 
+import android.util.Log
 import com.example.domain.accessToken.AccessTokenRepository
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
@@ -35,7 +36,7 @@ class HeadersInterceptor(
                 addHeader(HEADER_AUTH, "$HEADER_BEARER $token")
             }
         }.build()
-
+        Log.d("HeadersInterceptor", "Final headers: ${request.headers}")
         return try {
             response = chain.proceed(request)
             response

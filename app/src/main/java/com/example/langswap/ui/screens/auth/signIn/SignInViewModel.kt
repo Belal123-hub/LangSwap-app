@@ -3,7 +3,7 @@ package com.example.langswap.ui.screens.auth.signIn
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.auth.usecase.SignInUseCase
-import com.example.domain.auth.usecase.model.AuthInfo
+import com.example.domain.auth.usecase.model.SignInInfo
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -26,7 +26,7 @@ class SignInViewModel (
         viewModelScope.launch {
             try {
                 signInUseCase(
-                    AuthInfo(email = email,
+                    SignInInfo(email = email,
                         password = password)
                 ).also {
                     _navigateToHome.emit(Unit)

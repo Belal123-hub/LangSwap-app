@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.domain.dataStore.DataStoreDataSource
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
@@ -17,25 +18,59 @@ class DataStoreDataSourceImpl(
 ) : DataStoreDataSource {
 
     private val dataStore = context.dataStore
-    override val accessToken = dataStore.data.map { preferences -> preferences[ACCESS_TOKEN]?.ifEmpty { null } }
+
+    // Access Token Implementation
+    override val accessToken: Flow<String?> = dataStore.data.map { preferences ->
+        preferences[ACCESS_TOKEN]?.takeIf { it.isNotEmpty() }
+    }
+
     override suspend fun setAccessToken(accessToken: String?) {
         dataStore.edit { preferences ->
-            preferences[ACCESS_TOKEN] = accessToken.orEmpty()
+            if (accessToken != null) {
+                preferences[ACCESS_TOKEN] = accessToken
+            } else {
+                preferences.remove(ACCESS_TOKEN)
+            }
         }
     }
 
-    override suspend fun getRefreshToken() = dataStore.data.first()[REFRESH_TOKEN]?.ifEmpty { null }
+    // Refresh Token Implementation
+    override suspend fun getRefreshToken(): String? {
+        return dataStore.data.map { preferences ->
+            preferences[REFRESH_TOKEN]?.takeIf { it.isNotEmpty() }
+        }.first()
+    }
 
     override suspend fun setRefreshToken(refreshToken: String?) {
         dataStore.edit { preferences ->
-            preferences[REFRESH_TOKEN] = refreshToken.orEmpty()
+            if (refreshToken != null) {
+                preferences[REFRESH_TOKEN] = refreshToken
+            } else {
+                preferences.remove(REFRESH_TOKEN)
+            }
         }
     }
 
+    // User ID Implementation
+    override suspend fun setUserId(userId: String?) {
+        dataStore.edit { preferences ->
+            if (userId != null) {
+                preferences[USER_ID] = userId
+            } else {
+                preferences.remove(USER_ID)
+            }
+        }
+    }
 
+    override suspend fun getUserId(): String? {
+        return dataStore.data.map { preferences ->
+            preferences[USER_ID]?.takeIf { it.isNotEmpty() }
+        }.first()
+    }
 
     private companion object {
         val ACCESS_TOKEN = stringPreferencesKey("access_token")
         val REFRESH_TOKEN = stringPreferencesKey("refresh_token")
+        val USER_ID = stringPreferencesKey("user_id")
     }
 }

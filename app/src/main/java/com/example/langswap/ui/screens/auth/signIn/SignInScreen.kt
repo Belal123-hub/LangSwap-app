@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -23,13 +21,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.langswap.R
 import com.example.langswap.ui.common.AppButton
 import com.example.langswap.ui.common.PasswordVisibilityToggle
 import com.example.langswap.ui.common.AppTextField
@@ -98,7 +95,10 @@ fun SignInContent(
             label = "Password",
             value = password,
             keyboardType = KeyboardType.Password,
-            trailingIcon = { PasswordVisibilityToggle(passwordVisible) { passwordVisible = it } },
+            trailingIcon = {
+                PasswordVisibilityToggle(passwordVisible) { passwordVisible = it }
+            },
+            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             onValueChange = { password = it }
         )
         Spacer(modifier = Modifier.height(24.dp))
@@ -114,3 +114,4 @@ fun SignInContent(
         }
     }
 }
+
